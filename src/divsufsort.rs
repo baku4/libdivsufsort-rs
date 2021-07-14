@@ -13,7 +13,9 @@ extern "C" {
     pub fn divsufsort(T: *const sauchar_t, SA: *mut saidx_t, n: saidx_t) -> saint_t;
 
     pub fn divbwt(T: *const sauchar_t, U: *mut sauchar_t, A: *mut saidx_t, n: saidx_t) -> saidx_t;
-
+    
+    pub fn divsufsort_version() -> *const ::std::os::raw::c_char;
+    
     pub fn bw_transform(
         T: *const sauchar_t,
         U: *mut sauchar_t,
@@ -46,7 +48,7 @@ extern "C" {
         SAsize: saidx_t,
         left: *mut saidx_t,
     ) -> saidx_t;
-    
+
     pub fn sa_simplesearch(
         T: *const sauchar_t,
         Tsize: saidx_t,
