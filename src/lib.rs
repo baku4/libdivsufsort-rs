@@ -353,7 +353,8 @@ mod tests {
         let pidx_64 = divbwt64(&mut cloned_input).unwrap();
         assert_eq!((pidx_64, cloned_input), ans_64);
     }
-
+    
+    #[allow(dead_code)]
     fn print_divsufsort_version() {
         // 2.0.1-14-g5f60d6f
         println!("{}", divsufsort_version());
@@ -401,7 +402,7 @@ mod tests {
         let original_string = {
             let mut bwt = input_string.clone();
             let pidx = divbwt(&mut bwt).unwrap();
-            let err = inverse_bw_transform(&mut bwt, pidx);
+            let _ = inverse_bw_transform(&mut bwt, pidx);
             bwt
         };
         assert_eq!(original_string, input_string);
@@ -410,7 +411,7 @@ mod tests {
         let original_string = {
             let mut bwt = input_string.clone();
             let pidx = divbwt64(&mut bwt).unwrap();
-            let err = inverse_bw_transform64(&mut bwt, pidx);
+            let _ = inverse_bw_transform64(&mut bwt, pidx);
             bwt
         };
         assert_eq!(original_string, input_string);

@@ -1,3 +1,3 @@
-[submodule "libdivsufsort"]
-	path = libdivsufsort
-	url = https://github.com/y-256/libdivsufsort.git
+[submodule "src/libdivsufsort"]
+	path = src/libdivsufsort
+	url = https://github.com/y-256/libdivsufsort
