@@ -274,7 +274,7 @@ pub fn sa_search64(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec
 /// Input: Vector of bytes & its suffix array and `i32` encoded character.  
 /// example of `i32` encoding:
 /// ```rust
-/// let character: i32 = "T".as_bytes()[0] as i32
+/// let character: i32 = "T".as_bytes()[0] as i32;
 /// ```
 /// Output: tuple of index of suffix array for matched pattern and pattern count  
 /// Even with multiple counts, only one index is output.  
