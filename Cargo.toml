@@ -3,9 +3,13 @@ name = "libdivsufsort-sys"
 version = "0.1.0"
 authors = ["baku <bahkhun@gmail.com>"]
 edition = "2018"
+description = "A rust wrapper of libdivsufsort"
+readme = "README.md"
+repository = "https://github.com/baku4/libdivsufsort-sys/"
+license-file = "LICENSE"
+keywords = ["libdivsufsort", "sort", "bwt", "pattern_matching"]
+categories = ["compression", "algorithms"]
 build = "build.rs"
-
-[dependencies]
 
 [build-dependencies]
 cmake = "0.1.45"
