@@ -123,6 +123,155 @@ fn bw_transform64(input_string: &mut Vec<u8>, suffix_array: &mut Vec<i64>) -> Op
     }
 }
 
+fn inverse_bw_transform(input_string: &mut Vec<u8>, primary_index: i32) -> Option<()> {
+    let string_length = input_string.len();
+    let mut temp_array: Vec<i32> = vec![0; string_length];
+    let err = unsafe {
+        divsufsort::inverse_bw_transform(
+            input_string.as_ptr(),
+            input_string.as_mut_ptr(),
+            temp_array.as_mut_ptr(),
+            string_length as i32,
+            primary_index,
+        )
+    };
+    if err == 0 {
+        Some(())
+    } else {
+        None
+    }
+}
+fn inverse_bw_transform64(input_string: &mut Vec<u8>, primary_index: i64) -> Option<()> {
+    let string_length = input_string.len();
+    let mut temp_array: Vec<i64> = vec![0; string_length];
+    let err = unsafe {
+        divsufsort64::inverse_bw_transform64(
+            input_string.as_ptr(),
+            input_string.as_mut_ptr(),
+            temp_array.as_mut_ptr(),
+            string_length as i64,
+            primary_index,
+        )
+    };
+    if err == 0 {
+        Some(())
+    } else {
+        None
+    }
+}
+
+fn sufcheck(input_string: &Vec<u8>, suffix_array: &Vec<i32>, verbose: bool) -> Option<()> {
+    let err = unsafe {
+        divsufsort::sufcheck(
+            input_string.as_ptr(),
+            suffix_array.as_ptr(),
+            input_string.len() as i32,
+            if verbose {1} else {0},
+        )
+    };
+    if err == 0 {
+        Some(())
+    } else {
+        None
+    }
+}
+fn sufcheck64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, verbose: bool) -> Option<()> {
+    let err = unsafe {
+        divsufsort64::sufcheck64(
+            input_string.as_ptr(),
+            suffix_array.as_ptr(),
+            input_string.len() as i64,
+            if verbose {1} else {0},
+        )
+    };
+    if err == 0 {
+        Some(())
+    } else {
+        None
+    }
+}
+
+fn sa_search(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec<i32>) -> Option<(i32, i32)> {
+    let string_length = input_string.len() as i32;
+    let mut idx: i32 = 0;
+    let count = unsafe {
+        divsufsort::sa_search(
+            input_string.as_ptr(),
+            string_length,
+            pattern.as_ptr(),
+            pattern.len() as i32,
+            suffix_array.as_ptr(),
+            string_length,
+            &mut idx
+        )
+    };
+    if count != -1 {
+        Some((idx, count))
+    } else {
+        None
+    }
+}
+fn sa_search64(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec<i64>) -> Option<(i64, i64)> {
+    let string_length = input_string.len() as i64;
+    let mut idx: i64 = 0;
+    let count = unsafe {
+        divsufsort64::sa_search64(
+            input_string.as_ptr(),
+            string_length,
+            pattern.as_ptr(),
+            pattern.len() as i64,
+            suffix_array.as_ptr(),
+            string_length,
+            &mut idx
+        )
+    };
+    if count != -1 {
+        Some((idx, count))
+    } else {
+        None
+    }
+}
+
+fn sa_simplesearch(input_string: &Vec<u8>, suffix_array: &Vec<i32>, character: i32) -> Option<(i32, i32)> {
+    let string_length = input_string.len() as i32;
+    let mut idx: i32 = 0;
+    let count = unsafe {
+        divsufsort::sa_simplesearch(
+            input_string.as_ptr(),
+            string_length,
+            suffix_array.as_ptr(),
+            string_length,
+            character,
+            &mut idx,
+        )
+    };
+    if count != -1 {
+        Some((idx, count))
+    } else {
+        None
+    }
+}
+fn sa_simplesearch64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, character: i32) -> Option<(i64, i64)> {
+    let string_length = input_string.len() as i64;
+    let mut idx: i64 = 0;
+    let count = unsafe {
+        divsufsort64::sa_simplesearch64(
+            input_string.as_ptr(),
+            string_length,
+            suffix_array.as_ptr(),
+            string_length,
+            character,
+            &mut idx,
+        )
+    };
+    if count != -1 {
+        Some((idx, count))
+    } else {
+        None
+    }
+}
+
+
 
 #[cfg(test)]
 mod tests {
@@ -197,5 +346,91 @@ mod tests {
             (cloned_input, pidx)
         };
         assert_eq!(bwt_res, ans);
+    }
+
+    #[test]
+    fn test_inverse_bw_transform() {
+        let input_string = "CTCCGTACACCTGTTTCGTATCGGAACCGGTAAGTGAAATTTCCACATCGCCGGAAACCGTATATTGTCCATCCGCTGCCGGTGGATCCGGCTCCTGCGTGGAAAACCAGTCATCCTGATTTACATATGGTTCAATGGCACCGGATGCATAGATTTCCCCATTTTGCGTACCGGAAACGTGCGCAAGCACGATCTGTGTCTTACC".as_bytes().to_vec();
+
+        // 32
+        let original_string = {
+            let mut bwt = input_string.clone();
+            let pidx = divbwt(&mut bwt).unwrap();
+            let err = inverse_bw_transform(&mut bwt, pidx);
+            bwt
+        };
+        assert_eq!(original_string, input_string);
+
+        // 64
+        let original_string = {
+            let mut bwt = input_string.clone();
+            let pidx = divbwt64(&mut bwt).unwrap();
+            let err = inverse_bw_transform64(&mut bwt, pidx);
+            bwt
+        };
+        assert_eq!(original_string, input_string);
+    }
+
+    #[test]
+    fn test_sufcheck() {
+        let input_string = "CTCCGTACACCTGTTTCGTATCGGAACCGGTAAGTGAAATTTCCACATCGCCGGAAACCGTATATTGTCCATCCGCTGCCGGTGGATCCGGCTCCTGCGTGGAAAACCAGTCATCCTGATTTACATATGGTTCAATGGCACCGGATGCATAGATTTCCCCATTTTGCGTACCGGAAACGTGCGCAAGCACGATCTGTGTCTTACC".as_bytes().to_vec();
+
+        // 32
+        let err = {
+            let suffix_array = divsufsort(&input_string).unwrap();
+            sufcheck(&input_string, &suffix_array, false)
+        };
+        assert_eq!(err, Some(()));
+
+        // 64
+        let err = {
+            let suffix_array = divsufsort64(&input_string).unwrap();
+            sufcheck64(&input_string, &suffix_array, false)
+        };
+        assert_eq!(err, Some(()));
+    }
+
+    #[test]
+    fn test_sa_search() {
+        let input_string = "CTCCGTACACCTGTTTCGTATCGGAACCGGTAAGTGAAATTTCCACATCGCCGGAAACCGTATATTGTCCATCCGCTGCCGGTGGATCCGGCTCCTGCGTGGAAAACCAGTCATCCTGATTTACATATGGTTCAATGGCACCGGATGCATAGATTTCCCCATTTTGCGTACCGGAAACGTGCGCAAGCACGATCTGTGTCTTACC".as_bytes().to_vec();
+        let pattern = "TACACCTGTTTCG".as_bytes().to_vec();
+
+        // 32
+        let (position, count) = {
+            let suffix_array = divsufsort(&input_string).unwrap();
+            let (idx, count) = sa_search(&input_string, &pattern, &suffix_array).unwrap();
+            (suffix_array[idx as usize], count)
+        };
+        assert_eq!((position, count), (5, 1));
+        
+        // 64
+        let (position, count) = {
+            let suffix_array = divsufsort64(&input_string).unwrap();
+            let (idx, count) = sa_search64(&input_string, &pattern, &suffix_array).unwrap();
+            (suffix_array[idx as usize], count)
+        };
+        assert_eq!((position, count), (5, 1));
+    }
+
+    #[test]
+    fn test_sa_simplesearch() {
+        let input_string = "CTCCGTACACCTGTTTCGTATCGGAACCGGTAAGTGAAATTTCCACATCGCCGGAAACCGTATATTGTCCATCCGCTGCCGGTGGATCCGGCTCCTGCGTGGAAAACCAGTCATCCTGATTTACATATGGTTCAATGGCACCGGATGCATAGATTTCCCCATTTTGCGTACCGGAAACGTGCGCAAGCACGATCTGTGTCTTACC".as_bytes().to_vec();
+        let character: i32 = "T".as_bytes()[0] as i32;
+
+        // 32
+        let count = {
+            let suffix_array = divsufsort(&input_string).unwrap();
+            let (_, count) = sa_simplesearch(&input_string, &suffix_array, character).unwrap();
+            count
+        };
+        assert_eq!(count, 54);
+
+        // 64
+        let count = {
+            let suffix_array = divsufsort64(&input_string).unwrap();
+            let (_, count) = sa_simplesearch64(&input_string, &suffix_array, character).unwrap();
+            count
+        };
+        assert_eq!(count, 54);
     }
 }
