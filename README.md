@@ -1,5 +1,5 @@
-# libdivsufsort-sys
-`libdivsufsort-sys` is rust wrapper of [`libdivsufsort`](https://github.com/y-256/libdivsufsort)  
+# libdivsufsort-rs
+`libdivsufsort-rs` is rust wrapper of [`libdivsufsort`](https://github.com/y-256/libdivsufsort)  
 ## Feature
 Including **all APIs** of both **32- and 64-bit** version.
  - More details are in included in original `C` codes of [`libdivsufsort`](https://github.com/y-256/libdivsufsort)  
