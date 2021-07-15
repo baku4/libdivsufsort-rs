@@ -272,7 +272,10 @@ pub fn sa_search64(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec
 
 /// "Search for the character c in the string T."
 /// Input: Vector of bytes & its suffix array and `i32` encoded character.  
-/// example of `i32` encoding: `let character: i32 = "T".as_bytes()[0] as i32`  
+/// example of `i32` encoding:
+/// ```rust
+/// let character: i32 = "T".as_bytes()[0] as i32
+/// ```
 /// Output: tuple of index of suffix array for matched pattern and pattern count  
 /// Even with multiple counts, only one index is output.  
 pub fn sa_simplesearch(input_string: &Vec<u8>, suffix_array: &Vec<i32>, character: i32) -> Option<(i32, i32)> {
