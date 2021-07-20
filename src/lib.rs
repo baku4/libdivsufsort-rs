@@ -321,6 +321,8 @@ pub fn sa_simplesearch64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, charac
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::time::{Duration, Instant};
+    use std::thread::sleep;
 
     fn vec_i32_to_i64(i32_vec: &Vec<i32>) -> Vec<i64> {
         i32_vec.iter().map(|&e| e as i64).collect::<Vec<i64>>()
@@ -478,5 +480,36 @@ mod tests {
             count
         };
         assert_eq!(count, 54);
+    }
+
+    #[test]
+    fn per_check() {
+        let input_string = "CTCCGTACACCTGTTTCGTATCGGAACCGGTAAGTGAAATTTCCACATCGCCGGAAACCGTATATTGTCCATCCGCTGCCGGTGGATCCGGCTCCTGCGTGGAAAACCAGTCATCCTGATTTACATATGGTTCAATGGCACCGGATGCATAGATTTCCCCATTTTGCGTACCGGAAACGTGCGCAAGCACGATCTGTGTCTTACC".as_bytes().to_vec();
+
+        // S1: using SA to bwt
+        let (bwt, pidx, sa) = {
+            println!("(1) using SA to bwt");
+            let mut bwt = input_string.clone();
+            let start = Instant::now();
+            let sa = divsufsort(&bwt).unwrap();
+            println!("sa: {}", start.elapsed().as_nanos());
+            let start = Instant::now();
+            let mut sa_cloned = sa.clone();
+            let pidx = bw_transform(&mut bwt, &mut sa_cloned).unwrap();
+            println!("clone & bwt: {}", start.elapsed().as_nanos());
+            (bwt, pidx, sa)
+        };
+        // S2: Sep
+        let (bwt, pidx, sa) = {
+            println!("(2) Sep");
+            let mut bwt = input_string.clone();
+            let start = Instant::now();
+            let pidx = divbwt(&mut bwt).unwrap();
+            println!("bwt: {}", start.elapsed().as_nanos());
+            let start = Instant::now();
+            let sa = divsufsort(&bwt).unwrap();
+            println!("sa: {}", start.elapsed().as_nanos());
+            (bwt, pidx, sa)
+        };
     }
 }
