@@ -10,6 +10,7 @@ mod divsufsort64;
 
 use std::ffi::CStr;
 
+#[inline]
 /// "Constructs the suffix array of a given string."  
 /// Input: Vector of bytes  
 /// Output: Suffix array
@@ -29,6 +30,7 @@ pub fn divsufsort(input_string: &Vec<u8>) -> Option<Vec<i32>> {
         None
     }
 }
+#[inline]
 /// 64-bit version of [divsufsort]
 pub fn divsufsort64(input_string: &Vec<u8>) -> Option<Vec<i64>> {
     let string_length = input_string.len();
@@ -47,6 +49,7 @@ pub fn divsufsort64(input_string: &Vec<u8>) -> Option<Vec<i64>> {
     }
 }
 
+#[inline]
 /// "Constructs the burrows-wheeler transformed string of a given string."  
 /// Input: Vector of bytes  
 /// A input vector is transformed to burrows wheeler transformed string  
@@ -68,7 +71,8 @@ pub fn divbwt(input_string: &mut Vec<u8>) -> Option<i32> {
         None
     }
 }
-/// 64-bit version of `divbwt`
+#[inline]
+/// 64-bit version of [divbwt]
 pub fn divbwt64(input_string: &mut Vec<u8>) -> Option<i64> {
     let string_length = input_string.len();
     let mut temp_array: Vec<i64> = vec![0; string_length];
@@ -87,6 +91,7 @@ pub fn divbwt64(input_string: &mut Vec<u8>) -> Option<i64> {
     }
 }
 
+#[inline]
 /// "Returns the version of the divsufsort library."
 pub fn divsufsort_version() -> String {
     unsafe {
@@ -95,6 +100,7 @@ pub fn divsufsort_version() -> String {
         cstr.unwrap().to_string()
     }
 }
+#[inline]
 /// 64-bit version of [divsufsort_version]
 pub fn divsufsort64_version() -> String {
     unsafe {
@@ -104,6 +110,7 @@ pub fn divsufsort64_version() -> String {
     }
 }
 
+#[inline]
 /// "Constructs the burrows-wheeler transformed string of a given string and suffix array."  
 /// Input: Vector of bytes & its suffix array  
 /// A input vector is transformed to burrows wheeler transformed string  
@@ -126,6 +133,7 @@ pub fn bw_transform(input_string: &mut Vec<u8>, suffix_array: &mut Vec<i32>) -> 
         None
     }
 }
+#[inline]
 /// 64-bit version of [bw_transform]
 pub fn bw_transform64(input_string: &mut Vec<u8>, suffix_array: &mut Vec<i64>) -> Option<i64> {
     let string_length = input_string.len();
@@ -146,6 +154,7 @@ pub fn bw_transform64(input_string: &mut Vec<u8>, suffix_array: &mut Vec<i64>) -
     }
 }
 
+#[inline]
 /// "Inverse BW-transforms a given BWTed string."  
 /// Input: Vector of bytes(burrows wheeler transformed) & its primary index  
 /// A input vector is transformed to original string
@@ -168,6 +177,7 @@ pub fn inverse_bw_transform(input_string: &mut Vec<u8>, primary_index: i32) -> O
         None
     }
 }
+#[inline]
 /// 64-bit version of [inverse_bw_transform]
 pub fn inverse_bw_transform64(input_string: &mut Vec<u8>, primary_index: i64) -> Option<()> {
     let string_length = input_string.len();
@@ -188,6 +198,7 @@ pub fn inverse_bw_transform64(input_string: &mut Vec<u8>, primary_index: i64) ->
     }
 }
 
+#[inline]
 /// "Checks the correctness of a given suffix array."
 /// Input: Vector of bytes & its suffix array & verbose option
 /// If verbose is true, additional information is printed to stdout.
@@ -207,6 +218,7 @@ pub fn sufcheck(input_string: &Vec<u8>, suffix_array: &Vec<i32>, verbose: bool) 
         None
     }
 }
+#[inline]
 /// 64-bit version of [sufcheck]
 pub fn sufcheck64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, verbose: bool) -> Option<()> {
     let err = unsafe {
@@ -224,6 +236,8 @@ pub fn sufcheck64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, verbose: bool
     }
 }
 
+#[inline]
+// FIXME: index can receive multiple positions
 /// "Search for the pattern P in the string T."
 /// Input: Vector of bytes & its suffix array and vector of pattern string.
 /// Output: tuple of index of suffix array for matched pattern and pattern count
@@ -248,6 +262,7 @@ pub fn sa_search(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec<i
         None
     }
 }
+#[inline]
 /// 64-bit version of [sa_search]
 pub fn sa_search64(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec<i64>) -> Option<(i64, i64)> {
     let string_length = input_string.len() as i64;
@@ -270,6 +285,8 @@ pub fn sa_search64(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec
     }
 }
 
+#[inline]
+// FIXME: example
 /// "Search for the character c in the string T."
 /// Input: Vector of bytes & its suffix array and `i32` encoded character.  
 /// example of `i32` encoding:
@@ -297,6 +314,7 @@ pub fn sa_simplesearch(input_string: &Vec<u8>, suffix_array: &Vec<i32>, characte
         None
     }
 }
+#[inline]
 /// 64-bit version of [sa_simplesearch]
 pub fn sa_simplesearch64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, character: i32) -> Option<(i64, i64)> {
     let string_length = input_string.len() as i64;
