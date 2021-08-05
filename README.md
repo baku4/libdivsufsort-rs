@@ -16,4 +16,4 @@ Or you can clone this repository with mode
 git clone --recursive https://github.com/baku4/libdivsufsort-rs.git
 ```
 ## Docs
-[`libdivsufsort-rs`](https://docs.rs/libdivsufsort-rs/0.1.0/libdivsufsort_rs/)
+[`libdivsufsort-rs`](https://docs.rs/libdivsufsort-rs/)
