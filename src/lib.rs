@@ -157,8 +157,8 @@ pub fn bw_transform64(input_string: &mut Vec<u8>, suffix_array: &mut Vec<i64>) -
 #[inline]
 /// "Inverse BW-transforms a given BWTed string."  
 /// Input: Vector of bytes(burrows wheeler transformed) & its primary index  
-/// A input vector is transformed to original string
-/// Output: If no error occured, get Some value of `unit`. Otherwise, None.
+/// A input vector is transformed to original string  
+/// Output: If no error occured, get Some value of `unit`. Otherwise, `None`.
 pub fn inverse_bw_transform(input_string: &mut Vec<u8>, primary_index: i32) -> Option<()> {
     let string_length = input_string.len();
     let mut temp_array: Vec<i32> = vec![0; string_length];
@@ -199,10 +199,10 @@ pub fn inverse_bw_transform64(input_string: &mut Vec<u8>, primary_index: i64) ->
 }
 
 #[inline]
-/// "Checks the correctness of a given suffix array."
-/// Input: Vector of bytes & its suffix array & verbose option
-/// If verbose is true, additional information is printed to stdout.
-/// Output: If no error occured, get Some value of `unit`. Otherwise, None.
+/// "Checks the correctness of a given suffix array."  
+/// Input: Vector of bytes & its suffix array & verbose option  
+/// If verbose is true, additional information is printed to stdout.  
+/// Output: If no error occured, get Some value of `unit`. Otherwise, `None`.
 pub fn sufcheck(input_string: &Vec<u8>, suffix_array: &Vec<i32>, verbose: bool) -> Option<()> {
     let err = unsafe {
         divsufsort::sufcheck(
@@ -238,9 +238,9 @@ pub fn sufcheck64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, verbose: bool
 
 #[inline]
 // FIXME: index can receive multiple positions
-/// "Search for the pattern P in the string T."
-/// Input: Vector of bytes & its suffix array and vector of pattern string.
-/// Output: tuple of index of suffix array for matched pattern and pattern count
+/// "Search for the pattern P in the string T."  
+/// Input: Vector of bytes & its suffix array and vector of pattern string.  
+/// Output: tuple of index of suffix array for matched pattern and pattern count  
 /// Even with multiple counts, only one index is output.
 pub fn sa_search(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec<i32>) -> Option<(i32, i32)> {
     let string_length = input_string.len() as i32;
@@ -286,12 +286,11 @@ pub fn sa_search64(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec
 }
 
 #[inline]
-// FIXME: example
-/// "Search for the character c in the string T."
+/// "Search for the character c in the string T."  
 /// Input: Vector of bytes & its suffix array and `i32` encoded character.  
 /// example of `i32` encoding:
 /// ```rust
-/// let character: i32 = "T".as_bytes()[0] as i32;
+/// let character: i32 = 'T' as i32;
 /// ```
 /// Output: tuple of index of suffix array for matched pattern and pattern count  
 /// Even with multiple counts, only one index is output.  
