@@ -1,8 +1,9 @@
 [package]
 name = "libdivsufsort-rs"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["baku <bahkhun@gmail.com>"]
-edition = "2018"
+edition = "2021"
+rust-version = "1.57.0"
 description = "A rust wrapper of libdivsufsort"
 readme = "README.md"
 repository = "https://github.com/baku4/libdivsufsort-rs/"
@@ -12,4 +13,4 @@ categories = ["compression", "algorithms"]
 build = "build.rs"
 
 [build-dependencies]
-cmake = "0.1.45"
+cmake = "0.1.49"
