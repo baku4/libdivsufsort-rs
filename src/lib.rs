@@ -14,7 +14,7 @@ use std::ffi::CStr;
 /// "Constructs the suffix array of a given string."  
 /// Input: Vector of bytes  
 /// Output: Suffix array
-pub fn divsufsort(input_string: &Vec<u8>) -> Option<Vec<i32>> {
+pub fn divsufsort(input_string: &[u8]) -> Option<Vec<i32>> {
     let string_length = input_string.len();
     let mut sa: Vec<i32> = vec![0; string_length];
     let err = unsafe {
@@ -32,7 +32,7 @@ pub fn divsufsort(input_string: &Vec<u8>) -> Option<Vec<i32>> {
 }
 #[inline]
 /// 64-bit version of [divsufsort]
-pub fn divsufsort64(input_string: &Vec<u8>) -> Option<Vec<i64>> {
+pub fn divsufsort64(input_string: &[u8]) -> Option<Vec<i64>> {
     let string_length = input_string.len();
     let mut sa: Vec<i64> = vec![0; string_length];
     let err = unsafe {
@@ -54,7 +54,7 @@ pub fn divsufsort64(input_string: &Vec<u8>) -> Option<Vec<i64>> {
 /// Input: Vector of bytes  
 /// A input vector is transformed to burrows wheeler transformed string  
 /// Output: Primary index(usually $ sign) of burrows wheeler transformed string
-pub fn divbwt(input_string: &mut Vec<u8>) -> Option<i32> {
+pub fn divbwt(input_string: &mut [u8]) -> Option<i32> {
     let string_length = input_string.len();
     let mut temp_array: Vec<i32> = vec![0; string_length];
     let primary_index =  unsafe {
@@ -73,7 +73,7 @@ pub fn divbwt(input_string: &mut Vec<u8>) -> Option<i32> {
 }
 #[inline]
 /// 64-bit version of [divbwt]
-pub fn divbwt64(input_string: &mut Vec<u8>) -> Option<i64> {
+pub fn divbwt64(input_string: &mut [u8]) -> Option<i64> {
     let string_length = input_string.len();
     let mut temp_array: Vec<i64> = vec![0; string_length];
     let primary_index = unsafe {
@@ -115,7 +115,7 @@ pub fn divsufsort64_version() -> String {
 /// Input: Vector of bytes & its suffix array  
 /// A input vector is transformed to burrows wheeler transformed string  
 /// Output: Primary index(usually $ sign) of burrows wheeler transformed string
-pub fn bw_transform(input_string: &mut Vec<u8>, suffix_array: &mut Vec<i32>) -> Option<i32> {
+pub fn bw_transform(input_string: &mut [u8], suffix_array: &mut [i32]) -> Option<i32> {
     let string_length = input_string.len();
     let mut primary_index: i32 = 0;
     let err = unsafe {
@@ -135,7 +135,7 @@ pub fn bw_transform(input_string: &mut Vec<u8>, suffix_array: &mut Vec<i32>) -> 
 }
 #[inline]
 /// 64-bit version of [bw_transform]
-pub fn bw_transform64(input_string: &mut Vec<u8>, suffix_array: &mut Vec<i64>) -> Option<i64> {
+pub fn bw_transform64(input_string: &mut [u8], suffix_array: &mut [i64]) -> Option<i64> {
     let string_length = input_string.len();
     let mut primary_index: i64 = 0;
     let err = unsafe {
@@ -159,7 +159,7 @@ pub fn bw_transform64(input_string: &mut Vec<u8>, suffix_array: &mut Vec<i64>) -
 /// Input: Vector of bytes(burrows wheeler transformed) & its primary index  
 /// A input vector is transformed to original string  
 /// Output: If no error occured, get Some value of `unit`. Otherwise, `None`.
-pub fn inverse_bw_transform(input_string: &mut Vec<u8>, primary_index: i32) -> Option<()> {
+pub fn inverse_bw_transform(input_string: &mut [u8], primary_index: i32) -> Option<()> {
     let string_length = input_string.len();
     let mut temp_array: Vec<i32> = vec![0; string_length];
     let err = unsafe {
@@ -179,7 +179,7 @@ pub fn inverse_bw_transform(input_string: &mut Vec<u8>, primary_index: i32) -> O
 }
 #[inline]
 /// 64-bit version of [inverse_bw_transform]
-pub fn inverse_bw_transform64(input_string: &mut Vec<u8>, primary_index: i64) -> Option<()> {
+pub fn inverse_bw_transform64(input_string: &mut [u8], primary_index: i64) -> Option<()> {
     let string_length = input_string.len();
     let mut temp_array: Vec<i64> = vec![0; string_length];
     let err = unsafe {
@@ -203,7 +203,7 @@ pub fn inverse_bw_transform64(input_string: &mut Vec<u8>, primary_index: i64) ->
 /// Input: Vector of bytes & its suffix array & verbose option  
 /// If verbose is true, additional information is printed to stdout.  
 /// Output: If no error occured, get Some value of `unit`. Otherwise, `None`.
-pub fn sufcheck(input_string: &Vec<u8>, suffix_array: &Vec<i32>, verbose: bool) -> Option<()> {
+pub fn sufcheck(input_string: &[u8], suffix_array: &[i32], verbose: bool) -> Option<()> {
     let err = unsafe {
         divsufsort::sufcheck(
             input_string.as_ptr(),
@@ -220,7 +220,7 @@ pub fn sufcheck(input_string: &Vec<u8>, suffix_array: &Vec<i32>, verbose: bool) 
 }
 #[inline]
 /// 64-bit version of [sufcheck]
-pub fn sufcheck64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, verbose: bool) -> Option<()> {
+pub fn sufcheck64(input_string: &[u8], suffix_array: &[i64], verbose: bool) -> Option<()> {
     let err = unsafe {
         divsufsort64::sufcheck64(
             input_string.as_ptr(),
@@ -242,7 +242,7 @@ pub fn sufcheck64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, verbose: bool
 /// Input: Vector of bytes & its suffix array and vector of pattern string.  
 /// Output: tuple of index of suffix array for matched pattern and pattern count  
 /// Even with multiple counts, only one index is output.
-pub fn sa_search(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec<i32>) -> Option<(i32, i32)> {
+pub fn sa_search(input_string: &[u8], pattern: &[u8], suffix_array: &[i32]) -> Option<(i32, i32)> {
     let string_length = input_string.len() as i32;
     let mut idx: i32 = 0;
     let count = unsafe {
@@ -264,7 +264,7 @@ pub fn sa_search(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec<i
 }
 #[inline]
 /// 64-bit version of [sa_search]
-pub fn sa_search64(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec<i64>) -> Option<(i64, i64)> {
+pub fn sa_search64(input_string: &[u8], pattern: &[u8], suffix_array: &[i64]) -> Option<(i64, i64)> {
     let string_length = input_string.len() as i64;
     let mut idx: i64 = 0;
     let count = unsafe {
@@ -294,7 +294,7 @@ pub fn sa_search64(input_string: &Vec<u8>, pattern: &Vec<u8>, suffix_array: &Vec
 /// ```
 /// Output: tuple of index of suffix array for matched pattern and pattern count  
 /// Even with multiple counts, only one index is output.  
-pub fn sa_simplesearch(input_string: &Vec<u8>, suffix_array: &Vec<i32>, character: i32) -> Option<(i32, i32)> {
+pub fn sa_simplesearch(input_string: &[u8], suffix_array: &[i32], character: i32) -> Option<(i32, i32)> {
     let string_length = input_string.len() as i32;
     let mut idx: i32 = 0;
     let count = unsafe {
@@ -315,7 +315,7 @@ pub fn sa_simplesearch(input_string: &Vec<u8>, suffix_array: &Vec<i32>, characte
 }
 #[inline]
 /// 64-bit version of [sa_simplesearch]
-pub fn sa_simplesearch64(input_string: &Vec<u8>, suffix_array: &Vec<i64>, character: i32) -> Option<(i64, i64)> {
+pub fn sa_simplesearch64(input_string: &[u8], suffix_array: &[i64], character: i32) -> Option<(i64, i64)> {
     let string_length = input_string.len() as i64;
     let mut idx: i64 = 0;
     let count = unsafe {
