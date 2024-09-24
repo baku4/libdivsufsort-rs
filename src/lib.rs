@@ -243,17 +243,16 @@ pub fn sufcheck64(input_string: &[u8], suffix_array: &[i64], verbose: bool) -> O
 /// Output: tuple of index of suffix array for matched pattern and pattern count  
 /// Even with multiple counts, only one index is output.
 pub fn sa_search(input_string: &[u8], pattern: &[u8], suffix_array: &[i32]) -> Option<(i32, i32)> {
-    let string_length = input_string.len() as i32;
     let mut idx: i32 = 0;
     let count = unsafe {
         divsufsort::sa_search(
             input_string.as_ptr(),
-            string_length,
+            input_string.len() as i32,
             pattern.as_ptr(),
             pattern.len() as i32,
             suffix_array.as_ptr(),
-            string_length,
-            &mut idx
+            suffix_array.len() as i32,
+            &mut idx,
         )
     };
     if count != -1 {
@@ -264,18 +263,21 @@ pub fn sa_search(input_string: &[u8], pattern: &[u8], suffix_array: &[i32]) -> O
 }
 #[inline]
 /// 64-bit version of [sa_search]
-pub fn sa_search64(input_string: &[u8], pattern: &[u8], suffix_array: &[i64]) -> Option<(i64, i64)> {
-    let string_length = input_string.len() as i64;
+pub fn sa_search64(
+    input_string: &[u8],
+    pattern: &[u8],
+    suffix_array: &[i64],
+) -> Option<(i64, i64)> {
     let mut idx: i64 = 0;
     let count = unsafe {
         divsufsort64::sa_search64(
             input_string.as_ptr(),
-            string_length,
+            input_string.len() as i64,
             pattern.as_ptr(),
             pattern.len() as i64,
             suffix_array.as_ptr(),
-            string_length,
-            &mut idx
+            suffix_array.len() as i64,
+            &mut idx,
         )
     };
     if count != -1 {
