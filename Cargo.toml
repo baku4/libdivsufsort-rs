@@ -1,6 +1,6 @@
 [package]
 name = "libdivsufsort-rs"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["baku <bahkhun@gmail.com>"]
 edition = "2021"
 rust-version = "1.57.0"
