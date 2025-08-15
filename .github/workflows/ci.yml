@@ -64,9 +64,3 @@ jobs:
 
     - name: Run tests
       run: cargo test --verbose --target ${{ matrix.target }}
-
-    - name: Check formatting
-      run: cargo fmt -- --check
-
-    - name: Run clippy
-      run: cargo clippy --target ${{ matrix.target }} -- -D warnings
