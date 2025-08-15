@@ -11,6 +11,7 @@ fn main() {
         .define("BUILD_SHARED_LIBS", "OFF")
         .define("BUILD_DIVSUFSORT64", "ON")
         .define("CMAKE_INSTALL_LIBDIR", out_path)
+        .define("CMAKE_POLICY_VERSION_MINIMUM", "3.5")
         .build();
     println!("cargo:rustc-link-search=native={}", dst.display());
     println!("cargo:rustc-link-lib=static=divsufsort");
